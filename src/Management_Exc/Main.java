@@ -2,6 +2,7 @@ package Management_Exc;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class Main {
 
@@ -16,7 +17,31 @@ public class Main {
      * @throws NoSuchElementException when given manager or employee does not exist in the list of persons
      */
     public static void giveRaise(List<Person> persons, String manager, String employee, double salary)  {
-
+        Manager m = null;
+        Employee e = null;
+        for (Person p : persons) {
+            if(p.getName().equals(manager))
+            {
+                if(!(p instanceof Manager))
+                    throw new ClassCastException(p.getName() + " is not a manager");
+                m = (Manager)p;
+                break;
+            }
+        }
+        for(Person p : persons){
+            if(Objects.equals(employee, p.getName()))
+            {
+                if(!(p instanceof Employee))
+                    throw new ClassCastException(p.getName() + " is not an employee");
+                e = (Employee)p;
+                break;
+            }
+        }
+        if(m == null)
+            throw new NoSuchElementException(manager + " does not exist");
+        if(e == null)
+            throw new NoSuchElementException(employee + " does not exist");
+        m.giveRaise(e,salary);
     }
 
     /**
@@ -29,7 +54,31 @@ public class Main {
      * @throws IllegalStateException when developer already has a manager
      */
     public static void assignPM(List<Person> persons, String developer, String manager) {
-
+        Developer d = null;
+        Manager m = null;
+        for(Person p : persons){
+            if(p.getName().equals(developer)){
+                if(!(p instanceof Developer)) throw new ClassCastException(p.getName() + " is not a developer");
+                else {
+                    d = (Developer) p;
+                    break;
+                }
+            }
+        }
+        for(Person p : persons){
+            if(p.getName().equals(manager)){
+                if(!(p instanceof Manager)) throw new ClassCastException(p.getName() + " is not a manager");
+                else {
+                    m = (Manager) p;
+                    break;
+                }
+            }
+        }
+        if(m == null)
+            throw new NoSuchElementException(manager + " does not exist");
+        if(d == null)
+            throw new NoSuchElementException(developer + " does not exist");
+        d.setProjectManager(m);
     }
 
     /**
@@ -42,6 +91,31 @@ public class Main {
      * @throws NoSuchElementException when given customer or employee is not in the list of persons
      */
     public static String customerSpeak(List<Person> persons, String customer, String employee) {
-        return null;
+        Customer c = null;
+        Employee e = null;
+        for(Person p : persons){
+            if(p.getName().equals(customer)){
+                if(!(p instanceof Customer)) throw new ClassCastException(p.getName() + " is not a customer");
+                else {
+                    c = (Customer) p;
+                    break;
+                }
+            }
+        }
+        for(Person p : persons){
+            if(p.getName().equals(employee)){
+                if(!(p instanceof Employee)) throw new ClassCastException(p.getName() + " is not an employee");
+                else {
+                    e = (Employee) p;
+                    break;
+                }
+            }
+        }
+        if(c == null)
+            throw new NoSuchElementException(customer + " does not exist");
+        if(e == null)
+            throw new NoSuchElementException(employee + " does not exist");
+
+        return c.speak(e);
     }
 }
